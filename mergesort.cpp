@@ -1,35 +1,38 @@
 #include <iostream>
 #include<cstdlib>
 
-
+/* Segunda parte do algoritmo mergesort, nessa parte, une-se duas listas    *
+ * (subArrayLeft e subArrayRight) de forma que estejam ordenadas, para isso *
+ * se compara o topo de cada pilha até criar um array que esteja ordenado   */
 void merge(int array[], int inicio, int meio, int fim){
-    int length_right = fim-meio; 
-    int length_left = meio-inicio;  
-    int subArrayLeft[length_left]; 
-    int subArrayRight[length_right];
-    int top_left, top_right;
+    int tamanho_direita = fim-meio;         // Quantidade de elementos no array da direita 
+    int tamanho_esquerda = meio-inicio;     // Quantidade de elementos no array da esquerda
+    int subArrayLeft[tamanho_esquerda];     
+    int subArrayRight[tamanho_direita];
+    int top_left, top_right;                // Topo de cada pilha
 
+    // Inicialmente, o topo de cada pilha é definido como 0 
     top_right = top_left = 0;
 
-    // Deep copy of left part
-    for(auto i = 0; i < length_left; i++){
+    // Cópia da parte esquerda 
+    for(auto i = 0; i < tamanho_esquerda; i++){
         subArrayLeft[i] = array[i+inicio];
     }
-    // Deep copy of right part
-    for(auto i = 0; i < length_right; i++){
+    // Cópia da parte direita  
+    for(auto i = 0; i < tamanho_direita; i++){
         subArrayRight[i] = array[i+meio];
     }
 
     for(auto i = inicio; i < fim; i++){
-        if(top_left >= length_left){    // Check if the top right is out of range
+        if(top_left >= tamanho_esquerda){    // Checa se o topo da pilha direita está fora dos endereços do array
             array[i] = subArrayRight[top_right];
-            top_right++;
+            top_right++; 
         }
-        else if(top_right >= length_right){     // Check if the top left is out of range
+        else if(top_right >= tamanho_direita){     // Checa se o topo da pilha esquerda está fora dos endereços do array
             array[i] = subArrayLeft[top_left]; 
             top_left++; 
         }
-        else if(subArrayLeft[top_left] < subArrayRight[top_right]){   // Compare the top of each array
+        else if(subArrayLeft[top_left] <= subArrayRight[top_right]){   // Compara o topo de cada array 
             array[i] = subArrayLeft[top_left];
             top_left++; 
         }else{ 
@@ -41,7 +44,7 @@ void merge(int array[], int inicio, int meio, int fim){
 
 }
 
-// Recursive function to implement mergesort
+// Função recursiva para implementar o mergesort
 void mergesort(int * array,  int inicio, int fim){
     if(fim - inicio > 1){
         int meio = (fim + inicio) / 2; 
@@ -54,38 +57,40 @@ void mergesort(int * array,  int inicio, int fim){
 
 
 int main(){
-    int inverted_list[9] = {9, 8, 7, 6, 5, 4, 3, 2, 1}; 
-    int random_list[15], i; 
+    int lista_invertida[9] = {9, 8, 7, 6, 5, 4, 3, 2, 1}; 
+    int lista_aleatoria[15], i; 
 
-    srand((unsigned) time(NULL)); //Using time system as seed 
+    /* Usa o horário do sistema como semente para a geração de números, evita números
+     * repetidos a cada execução */
+    srand((unsigned) time(NULL)); 
 
-    std::cout << "Random list unordered: "; 
-    // Fill the random list 
+    std::cout << "Lista aleatória desordenada: "; 
+    // Preenche a lista com números aleatórios
     for(i = 0; i < 15; i++){
-        random_list[i] = rand() % 10; // Generate random number between 1 and 9 
-        std::cout << random_list[i] << " "; 
+        lista_aleatoria[i] = rand() % 10; // Gera um número aleatório entre 1 e 9 
+        std::cout << lista_aleatoria[i] << " "; 
     } 
 
-    mergesort(random_list, 0, 15); 
+    mergesort(lista_aleatoria, 0, 15); 
 
-    std::cout << std::endl << "Random list ordered: "; 
-    // Print Random List  
+    std::cout << std::endl << "Lista aleatória ordenada: "; 
+    // Escreve a lista aleatória  
     for(i = 0; i < 15; i++){
-        std::cout << random_list[i] << " "; 
+        std::cout << lista_aleatoria[i] << " "; 
     } 
 
-    std::cout << "\n\nInverted list: "; 
-    // Fill the random list 
+    std::cout << "\n\nLista invertida: "; 
+    // Escreve a lista invertida 
     for(i = 0; i < 9; i++){
-        std::cout << inverted_list[i] << " "; 
+        std::cout << lista_invertida[i] << " "; 
     }
 
-    mergesort(inverted_list, 0, 9); 
+    mergesort(lista_invertida, 0, 9); 
 
-    std::cout << "\nInverted list ordered: "; 
-    // Fill the random list 
+    std::cout << "\nLista invertida ordenada: "; 
+    // Escreve a lista invertida
     for(i = 0; i < 9; i++){
-        std::cout << inverted_list[i] << " "; 
+        std::cout << lista_invertida[i] << " "; 
     } 
 
 }
